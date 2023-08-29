@@ -1,0 +1,39 @@
+# Tomcat
+server:
+  port: 10002
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: iot-gateway
+  profiles:
+    # 环境配置
+    active: dev
+  main:
+    web-application-type: reactive
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 192.168.91.133:8848
+      config:
+        # 配置中心地址
+        server-addr: 192.168.91.133:8848
+        # 配置文件格式
+        file-extension: yaml
+        # 共享配置
+        shared-configs:
+          - application-dev.yaml
+    gateway:
+      routes:
+        - id: iot_mange_route
+          uri: lb://iot-mangement
+          predicates:
+            - Path=/mange/**
+        - id: iot_auth_route
+          uri: lb://iot-auth
+          predicates:
+            - Path=/auth/**
+
+
+
