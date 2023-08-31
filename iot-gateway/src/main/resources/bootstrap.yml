@@ -27,7 +27,7 @@ spring:
     gateway:
       routes:
         - id: iot_mange_route
-          uri: lb://iot-mangement
+          uri: lb://iot-management
           predicates:
             - Path=/mange/**
         - id: iot_auth_route

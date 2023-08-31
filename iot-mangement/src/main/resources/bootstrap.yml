@@ -8,7 +8,7 @@ server:
 spring:
   application:
     # 应用名称
-    name: iot-mangement
+    name: iot-management
   profiles:
     # 环境配置
     active: dev

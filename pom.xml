@@ -14,6 +14,7 @@
         <module>iot-auth</module>
         <module>iot-gateway</module>
         <module>iot-access</module>
+        <module>iot-api</module>
     </modules>
 
     <properties>

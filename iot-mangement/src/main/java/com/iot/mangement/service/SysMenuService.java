@@ -3,6 +3,7 @@ package com.iot.mangement.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.iot.mangement.domain.SysMenuDomain;
 import com.iot.mangement.domain.vo.SysMenuDomainVO;
+import com.iot.mangement.domain.vo.SysMenuTree;
 import com.iot.mangement.mapper.SysMenuMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,5 +55,34 @@ public class SysMenuService {
 
     public void addMenuInfo(SysMenuDomain sysMenuDomain) {
         sysMenuMapper.insert(sysMenuDomain);
+    }
+
+    public List<SysMenuTree> getMenuListTree() {
+
+        List<SysMenuDomainVO> menuList = getMenuList();
+
+        SysMenuTree sysMenuTree = new SysMenuTree();
+        sysMenuTree.setLabel("物联协管中心");
+
+        buildMenuTree(menuList, sysMenuTree);
+
+
+        return Collections.singletonList(sysMenuTree);
+    }
+
+
+    public void buildMenuTree(List<SysMenuDomainVO> menuDomainVOS, SysMenuTree sysMenuTree) {
+        List<SysMenuTree> menuTreeList = new ArrayList<>();
+        for (SysMenuDomainVO menuDomainVO : menuDomainVOS) {
+            SysMenuTree menuTree = new SysMenuTree();
+            menuTree.setLabel(menuDomainVO.getTitle());
+            menuTreeList.add(menuTree);
+            if (!CollectionUtils.isEmpty(menuDomainVO.getChildren())) {
+                buildMenuTree(menuDomainVO.getChildren(), menuTree);
+            }
+        }
+        if (!CollectionUtils.isEmpty(menuTreeList)) {
+            sysMenuTree.setChildren(menuTreeList);
+        }
     }
 }

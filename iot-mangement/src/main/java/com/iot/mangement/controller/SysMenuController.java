@@ -46,4 +46,16 @@ public class SysMenuController {
         menuService.addMenuInfo(sysMenuDomain);
         return RUtils.success();
     }
+
+    /**
+     * 获取菜单列表（自定义树形结构）
+     *
+     * @return
+     */
+    @GetMapping("/getMenuListTree")
+    public R getMenuListTree() {
+        return RUtils.success(menuService.getMenuListTree());
+    }
+
+
 }
