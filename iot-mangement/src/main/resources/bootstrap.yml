@@ -13,6 +13,10 @@ spring:
     # 环境配置
     active: dev
   cloud:
+    sentinel:
+      transport:
+        port: 13000
+        dashboard: 192.168.91.133:8748
     nacos:
       discovery:
         # 服务注册地址

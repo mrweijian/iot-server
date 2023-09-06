@@ -12,6 +12,10 @@ spring:
   main:
     web-application-type: reactive
   cloud:
+    sentinel:
+      transport:
+        port: 15000
+        dashboard: 192.168.91.133:8748
     nacos:
       discovery:
         # 服务注册地址
