@@ -10,6 +10,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.mqtt.MqttDecoder;
+import io.netty.handler.codec.mqtt.MqttEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +49,9 @@ public class MqttNettyServer {
                     protected void initChannel(SocketChannel socketChannel) {
                         ChannelPipeline pipeline = socketChannel.pipeline();
                         // 编码器
-                        pipeline.addLast("encoder", new StringEncoder());
+                        pipeline.addLast("encoder", MqttEncoder.INSTANCE);
                         // 解码器
-                        pipeline.addLast("decoder", new StringDecoder());
+                        pipeline.addLast("decoder", new MqttDecoder());
                         pipeline.addLast(nettyServerHandler);
                     }
                 });
