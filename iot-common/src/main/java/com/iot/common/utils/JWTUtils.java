@@ -31,13 +31,13 @@ public class JWTUtils {
 
     private static final String JWT_PROPERTIES = "/jwt.properties";
 
-    private static String privateKey;
+    private static final String privateKey;
 
-    private static String publicKey;
+    private static final String publicKey;
 
-    private static String issusr;
+    private static final String issuser;
 
-    private static Integer expire;
+    private static final Integer expire;
 
 
     static {
@@ -47,7 +47,7 @@ public class JWTUtils {
 
             privateKey = properties.getProperty("jwt.privatekey");
             publicKey = properties.getProperty("jwt.publickey");
-            issusr = properties.getProperty("jwt.issusr");
+            issuser = properties.getProperty("jwt.issuser");
             expire = Integer.valueOf(properties.getProperty("jwt.expire"));
 
         } catch (Exception ex) {
@@ -59,7 +59,7 @@ public class JWTUtils {
     public static String createToken(String msg) {
         return JWT.create()
                 .withJWTId(UUID.randomUUID().toString().replace("-", ""))
-                .withIssuer(issusr)
+                .withIssuer(issuser)
                 .withAudience("")
                 .withIssuedAt(new Date())
                 .withExpiresAt(getExpireDate())

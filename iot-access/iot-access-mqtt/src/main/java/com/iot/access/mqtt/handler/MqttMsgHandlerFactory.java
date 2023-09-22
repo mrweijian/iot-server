@@ -1,5 +1,8 @@
 package com.iot.access.mqtt.handler;
 
+import com.iot.access.mqtt.handler.impl.OnConnectHandler;
+import com.iot.access.mqtt.handler.impl.OnPingReqHandler;
+import com.iot.access.mqtt.handler.impl.OnPublishHandler;
 import io.netty.handler.codec.mqtt.MqttMessageType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

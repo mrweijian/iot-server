@@ -18,4 +18,6 @@ public class LoginUserDTO {
 
     private String verifyCode;
 
+    private String uuid;
+
 }

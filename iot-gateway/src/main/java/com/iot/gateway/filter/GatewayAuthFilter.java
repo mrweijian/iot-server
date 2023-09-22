@@ -78,11 +78,13 @@ public class GatewayAuthFilter implements GlobalFilter, Ordered {
                 return buildReturnMono("令牌已过期！", exchange);
             }
 
+            String body = jwtTokenDto.getBody();
+            log.info(body);
         } catch (Exception ex) {
             return buildReturnMono("令牌解析错误!", exchange);
         }
 
-        return Mono.empty();
+        return chain.filter(exchange);
     }
 
     @Override

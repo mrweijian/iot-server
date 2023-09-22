@@ -2,6 +2,7 @@ package com.iot.auth.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.iot.auth.domain.LoginUserDTO;
+import com.iot.auth.service.LoginService;
 import com.iot.common.domain.R;
 import com.iot.common.utils.JWTUtils;
 import com.iot.common.utils.RUtils;
@@ -28,7 +29,7 @@ import javax.annotation.Resource;
 public class LoginController {
 
     @Resource
-    private AuthenticationManager authenticationManager;
+    private LoginService loginService;
 
     /**
      * 登录
@@ -38,16 +39,9 @@ public class LoginController {
      */
     @PostMapping("/login")
     public R<?> login(@RequestBody LoginUserDTO dto) {
-        //  todo:校验验证码
-        //  登录
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(JSON.toJSONString(dto), "");
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //  校验验证码
+        return RUtils.success(loginService.login(dto));
 
-        Object principal = authentication.getPrincipal();
-        String token = JWTUtils.createToken(JSON.toJSONString(principal));
-
-        return RUtils.success(token);
     }
 
 }

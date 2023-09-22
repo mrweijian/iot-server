@@ -26,4 +26,8 @@ public class RUtils<T> {
     public static <T> R error(String message) {
         return new R<>(500, message, "");
     }
+
+    public static <T> R error(int code, String message) {
+        return new R<>(code, message, "");
+    }
 }

@@ -1,5 +1,11 @@
-package com.iot.access.mqtt.handler;
+package com.iot.access.mqtt.handler.impl;
 
+import com.iot.access.mqtt.handler.MqttMsgInterface;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.DefaultClaims;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,9 +16,12 @@ import io.netty.handler.codec.mqtt.MqttMessage;
 import io.netty.handler.codec.mqtt.MqttMessageFactory;
 import io.netty.handler.codec.mqtt.MqttMessageType;
 import io.netty.handler.codec.mqtt.MqttPublishMessage;
+import io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Date;
 
 import static com.iot.access.mqtt.constant.DefaultTopicConstant.DEFAULT_REGISTER;
 
@@ -24,7 +33,7 @@ import static com.iot.access.mqtt.constant.DefaultTopicConstant.DEFAULT_REGISTER
  * @since 2023-09-11 15:10
  */
 @Slf4j
-public class OnPublishHandler implements MqttMsgInterface{
+public class OnPublishHandler implements MqttMsgInterface {
 
     @Override
     public void execute(ChannelHandlerContext ctx, MqttMessage message) {
@@ -41,5 +50,13 @@ public class OnPublishHandler implements MqttMsgInterface{
         if (topicName.startsWith(DEFAULT_REGISTER)) {
             log.info("注册设备基础信息！");
         }
+
+        // 回复消息
+        ByteBuf byteBuf = Unpooled.wrappedBuffer("{\"msg\":\"你好，已收到！\"}".getBytes());
+        MqttMessage mqttMessage = MqttMessageFactory.newMessage(
+                new MqttFixedHeader(MqttMessageType.PUBLISH, false, MqttQoS.AT_MOST_ONCE, true, 0),
+                new MqttPublishVariableHeader(topicName, -1),
+                byteBuf);
+        ctx.writeAndFlush(mqttMessage);
     }
 }

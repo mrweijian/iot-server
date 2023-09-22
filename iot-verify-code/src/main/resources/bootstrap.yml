@@ -1,20 +1,25 @@
 # Tomcat
 server:
-  port: 10002
+  port: 10005
+  servlet:
+    context-path: /captcha
+
 # Spring
 spring:
+  redis:
+    host: 192.168.91.133
+    port: 6379
+    database: 0
   application:
     # 应用名称
-    name: iot-gateway
+    name: iot-captcha
   profiles:
     # 环境配置
     active: dev
-  main:
-    web-application-type: reactive
   cloud:
     sentinel:
       transport:
-        port: 15000
+        port: 13000
         dashboard: 192.168.91.133:8748
     nacos:
       discovery:
@@ -28,21 +33,6 @@ spring:
         # 共享配置
         shared-configs:
           - application-dev.yaml
-    gateway:
-      routes:
-        - id: iot_mange_route
-          uri: lb://iot-management
-          predicates:
-            - Path=/mange/**
-        - id: iot_auth_route
-          uri: lb://iot-auth
-          predicates:
-            - Path=/auth/**
-        - id: iot_captcha
-          uri: lb://iot-captcha
-          predicates:
-            - Path=/captcha/**
-
 
 
 

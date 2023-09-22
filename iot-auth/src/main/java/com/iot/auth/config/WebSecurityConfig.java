@@ -6,6 +6,7 @@ import com.iot.auth.service.AuthenticationProviderCustomer;
 import com.iot.auth.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 功能描述：
@@ -25,7 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @since 2023-08-22 14:23
  */
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserServiceImpl userService;
@@ -53,8 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()//访问/r开始的放行
-                .anyRequest().authenticated()//其它请求全部验证
+                .antMatchers(HttpMethod.POST, "/login")
+                .permitAll()//访问/r开始的放行
+                .anyRequest()
+                .authenticated()//其它请求全部验证
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)// 不需要session
@@ -63,7 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(entryPointCust) //处理认证异常
-                .accessDeniedHandler(accessDeniedHandlerCust); //处理授权异常
+                .accessDeniedHandler(accessDeniedHandlerCust);//处理授权异常
+
     }
 
     // 配置登录认证，否则默认从内存中获取用户信息
