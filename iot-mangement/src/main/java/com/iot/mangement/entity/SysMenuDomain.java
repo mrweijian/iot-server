@@ -1,4 +1,4 @@
-package com.iot.mangement.domain;
+package com.iot.mangement.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

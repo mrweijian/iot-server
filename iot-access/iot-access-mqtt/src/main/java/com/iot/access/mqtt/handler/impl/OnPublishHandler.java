@@ -1,16 +1,12 @@
 package com.iot.access.mqtt.handler.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.iot.access.mqtt.handler.MqttMsgInterface;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.DefaultClaims;
+import com.iot.access.mqtt.handler.PublishMsgInterface;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.mqtt.MqttConnAckVariableHeader;
-import io.netty.handler.codec.mqtt.MqttConnectReturnCode;
 import io.netty.handler.codec.mqtt.MqttFixedHeader;
 import io.netty.handler.codec.mqtt.MqttMessage;
 import io.netty.handler.codec.mqtt.MqttMessageFactory;
@@ -20,8 +16,10 @@ import io.netty.handler.codec.mqtt.MqttPublishVariableHeader;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.util.Map;
 
 import static com.iot.access.mqtt.constant.DefaultTopicConstant.DEFAULT_REGISTER;
 
@@ -33,7 +31,11 @@ import static com.iot.access.mqtt.constant.DefaultTopicConstant.DEFAULT_REGISTER
  * @since 2023-09-11 15:10
  */
 @Slf4j
+@Component
 public class OnPublishHandler implements MqttMsgInterface {
+
+    @Autowired
+    private Map<String, PublishMsgInterface> publishMsgMap;
 
     @Override
     public void execute(ChannelHandlerContext ctx, MqttMessage message) {
@@ -41,14 +43,17 @@ public class OnPublishHandler implements MqttMsgInterface {
         MqttPublishMessage msg = (MqttPublishMessage) message;
 
         String topicName = msg.variableHeader().topicName();
-        log.info("主题{}接收到发布的消息：{}", topicName, msg);
         MqttQoS mqttQoS = msg.fixedHeader().qosLevel();
 
         String msgBody = msg.payload().toString(CharsetUtil.UTF_8);
+        // 去掉换行空格等格式
+        JSONObject jsonObject = JSON.parseObject(msgBody);
+        msgBody = JSON.toJSONString(jsonObject);
         log.info("主题{}获取到的消息体为：{}", topicName, msgBody);
-
         if (topicName.startsWith(DEFAULT_REGISTER)) {
             log.info("注册设备基础信息！");
+            PublishMsgInterface registerDevicePublishHandler = publishMsgMap.get("registerDevicePublishHandler");
+            registerDevicePublishHandler.hand(ctx, msgBody);
         }
 
         // 回复消息

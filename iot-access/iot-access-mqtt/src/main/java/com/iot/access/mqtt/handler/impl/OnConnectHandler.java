@@ -12,6 +12,7 @@ import io.netty.handler.codec.mqtt.MqttMessageType;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.netty.handler.codec.mqtt.MqttVersion;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * 功能描述：
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2023-09-11 15:07
  */
 @Slf4j
+@Component
 public class OnConnectHandler implements MqttMsgInterface {
 
     @Override

@@ -2,7 +2,7 @@ package com.iot.mangement.controller;
 
 import com.iot.common.domain.R;
 import com.iot.common.utils.RUtils;
-import com.iot.mangement.domain.SysMenuDomain;
+import com.iot.mangement.entity.SysMenuDomain;
 import com.iot.mangement.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

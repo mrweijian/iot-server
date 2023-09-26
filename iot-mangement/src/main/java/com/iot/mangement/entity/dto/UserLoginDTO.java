@@ -1,4 +1,4 @@
-package com.iot.mangement.domain.dto;
+package com.iot.mangement.entity.dto;
 
 import lombok.Data;
 

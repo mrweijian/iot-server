@@ -16,6 +16,9 @@
         <module>iot-access</module>
         <module>iot-api</module>
         <module>iot-verify-code</module>
+        <module>mybatis-generator</module>
+        <module>iot-parse</module>
+        <module>iot-framework</module>
     </modules>
 
     <properties>

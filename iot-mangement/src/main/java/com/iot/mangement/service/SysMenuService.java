@@ -1,9 +1,9 @@
 package com.iot.mangement.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.iot.mangement.domain.SysMenuDomain;
-import com.iot.mangement.domain.vo.SysMenuDomainVO;
-import com.iot.mangement.domain.vo.SysMenuTree;
+import com.iot.mangement.entity.SysMenuDomain;
+import com.iot.mangement.entity.vo.SysMenuDomainVO;
+import com.iot.mangement.entity.vo.SysMenuTree;
 import com.iot.mangement.mapper.SysMenuMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**

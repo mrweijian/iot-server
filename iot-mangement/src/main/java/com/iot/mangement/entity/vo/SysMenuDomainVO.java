@@ -1,6 +1,6 @@
-package com.iot.mangement.domain.vo;
+package com.iot.mangement.entity.vo;
 
-import com.iot.mangement.domain.SysMenuDomain;
+import com.iot.mangement.entity.SysMenuDomain;
 import lombok.Data;
 
 import java.util.List;

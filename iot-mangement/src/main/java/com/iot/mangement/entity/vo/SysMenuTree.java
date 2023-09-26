@@ -1,4 +1,4 @@
-package com.iot.mangement.domain.vo;
+package com.iot.mangement.entity.vo;
 
 import lombok.Data;
 

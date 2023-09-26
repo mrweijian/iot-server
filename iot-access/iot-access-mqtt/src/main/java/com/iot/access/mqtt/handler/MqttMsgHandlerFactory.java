@@ -5,6 +5,7 @@ import com.iot.access.mqtt.handler.impl.OnPingReqHandler;
 import com.iot.access.mqtt.handler.impl.OnPublishHandler;
 import io.netty.handler.codec.mqtt.MqttMessageType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,16 +18,25 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class MqttMsgHandlerFactory {
+    @Autowired
+    private OnConnectHandler onConnectHandler;
+
+    @Autowired
+    private OnPublishHandler onPublishHandler;
+
+    @Autowired
+    private OnPingReqHandler onPingReqHandler;
+
 
     MqttMsgInterface createMsgHandler(MqttMessageType mqttMessageType) {
 
         switch (mqttMessageType) {
             case CONNECT:
-                return new OnConnectHandler();
+                return onConnectHandler;
             case PUBLISH:
-                return new OnPublishHandler();
+                return onPublishHandler;
             case PINGREQ:
-                return new OnPingReqHandler();
+                return onPingReqHandler;
         }
         return null;
     }

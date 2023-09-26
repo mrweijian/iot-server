@@ -3,6 +3,7 @@ package com.iot.access.mqtt.server;
 import com.iot.access.mqtt.handler.NettyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -14,6 +15,8 @@ import io.netty.handler.codec.mqtt.MqttDecoder;
 import io.netty.handler.codec.mqtt.MqttEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +45,7 @@ public class MqttNettyServer {
         bootstrap.group(bossGroup, workerGroup)
                 // 使用NioServerSocketChannel作为服务器的通道实现
                 .channel(NioServerSocketChannel.class)
+                .handler(new LoggingHandler(LogLevel.INFO))
                 // 初始化服务器连接队列
                 .option(ChannelOption.SO_BACKLOG, 1024)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -57,6 +61,7 @@ public class MqttNettyServer {
                 });
         try {
             ChannelFuture future = bootstrap.bind(9002).sync();
+
             // 等待服务监听关闭
             future.channel().closeFuture().sync();
         } catch (InterruptedException exception) {
